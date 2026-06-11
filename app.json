@@ -4,27 +4,17 @@
     "slug": "bee-productive",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FFF8DC"
-    },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.joannacreatesart.beeproductive"
     },
     "android": {
+      "package": "com.joannacreatesart.beeproductive",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF8DC"
-      },
-      "package": "com.joannacreatesart.beeproductive"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      }
     },
     "plugins": ["expo-notifications"]
   }
