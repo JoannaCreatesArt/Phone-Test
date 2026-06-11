@@ -11,10 +11,7 @@
       "bundleIdentifier": "com.joannacreatesart.beeproductive"
     },
     "android": {
-      "package": "com.joannacreatesart.beeproductive",
-      "adaptiveIcon": {
-        "backgroundColor": "#FFF8DC"
-      }
+      "package": "com.joannacreatesart.beeproductive"
     },
     "plugins": []
   }
