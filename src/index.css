@@ -1,0 +1,447 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --amber-100: #FEF3C7;
+  --amber-200: #FDE68A;
+  --amber-400: #FBBF24;
+  --amber-500: #F59E0B;
+  --amber-600: #D97706;
+
+  --stone-50:  #FAFAF9;
+  --stone-100: #F5F5F4;
+  --stone-200: #E7E5E4;
+  --stone-300: #D6D3D1;
+  --stone-400: #A8A29E;
+  --stone-500: #78716C;
+  --stone-600: #57534E;
+  --stone-700: #44403C;
+  --stone-800: #292524;
+  --stone-900: #1C1917;
+
+  --red-100: #FEE2E2;
+  --red-500: #EF4444;
+  --red-700: #B91C1C;
+  --green-100: #F0FDF4;
+  --green-700: #15803D;
+
+  --sidebar-w: 220px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--stone-50);
+  color: var(--stone-900);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* ── Layout ─────────────────────────────────────── */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 36px 44px;
+}
+
+/* ── Sidebar ─────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--stone-900);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 12px;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  margin-bottom: 32px;
+}
+
+.sidebar-logo-icon { font-size: 26px; }
+
+.sidebar-logo-text {
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--stone-400);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+
+.nav-item:hover {
+  background: var(--stone-800);
+  color: var(--stone-100);
+}
+
+.nav-item.active {
+  background: var(--amber-500);
+  color: var(--stone-900);
+}
+
+.nav-item-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* ── Page header ─────────────────────────────────── */
+.page-header { margin-bottom: 28px; }
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--stone-500);
+  margin-top: 4px;
+}
+
+/* ── Stat cards ──────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--stone-200);
+  padding: 18px 20px;
+}
+
+.stat-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--stone-500);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.stat-card-value {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--stone-900);
+  margin-top: 4px;
+  letter-spacing: -1px;
+}
+
+.stat-card-unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stone-400);
+  margin-left: 3px;
+}
+
+/* ── Card ────────────────────────────────────────── */
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--stone-200);
+  padding: 20px 24px;
+}
+
+/* ── Sections ────────────────────────────────────── */
+.section { margin-bottom: 28px; }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--stone-500);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+}
+
+/* ── Inputs ──────────────────────────────────────── */
+.input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid var(--stone-200);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font);
+  background: white;
+  color: var(--stone-900);
+  outline: none;
+  transition: border-color 0.12s;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.input:focus { border-color: var(--amber-500); }
+.input::placeholder { color: var(--stone-400); }
+
+.select {
+  padding: 10px 14px;
+  border: 1.5px solid var(--stone-200);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font);
+  background: white;
+  color: var(--stone-900);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+
+.select:focus { border-color: var(--amber-500); }
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  transition: background 0.12s, opacity 0.12s;
+  white-space: nowrap;
+}
+
+.btn:active { opacity: 0.85; }
+
+.btn-primary { background: var(--amber-500); color: var(--stone-900); }
+.btn-primary:hover { background: var(--amber-600); }
+
+.btn-ghost { background: transparent; color: var(--stone-600); }
+.btn-ghost:hover { background: var(--stone-100); color: var(--stone-900); }
+
+.btn-large { padding: 13px 32px; font-size: 15px; }
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: var(--stone-300);
+  font-size: 18px;
+  line-height: 1;
+  transition: color 0.12s, background 0.12s;
+}
+
+.btn-icon:hover {
+  color: var(--red-500);
+  background: var(--red-100);
+}
+
+/* ── List items ──────────────────────────────────── */
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: white;
+  border: 1.5px solid var(--stone-200);
+  border-radius: 10px;
+  transition: border-color 0.12s;
+}
+
+.list-item:hover { border-color: var(--stone-300); }
+.list-item.completed { background: var(--stone-50); }
+
+/* ── Checkbox ────────────────────────────────────── */
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--stone-300);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s, border-color 0.12s;
+  background: white;
+}
+
+.checkbox:hover { border-color: var(--amber-400); }
+
+.checkbox.checked {
+  background: var(--amber-500);
+  border-color: var(--amber-500);
+}
+
+.checkbox.checked::after {
+  content: '✓';
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ── Priority badge ──────────────────────────────── */
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+
+.badge-high   { background: var(--red-100);   color: var(--red-700); }
+.badge-medium { background: var(--amber-100);  color: var(--amber-600); }
+.badge-low    { background: var(--green-100);  color: var(--green-700); }
+
+/* ── Timer ───────────────────────────────────────── */
+.timer-ring {
+  position: relative;
+  width: 240px;
+  height: 240px;
+}
+
+.timer-ring svg { transform: rotate(-90deg); }
+
+.timer-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-time {
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  color: var(--stone-900);
+}
+
+.timer-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--stone-400);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* ── Habits ──────────────────────────────────────── */
+.habit-icon { font-size: 22px; width: 32px; text-align: center; flex-shrink: 0; }
+
+.habit-streak {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--amber-600);
+  flex-shrink: 0;
+}
+
+/* ── Quick cards (Home) ──────────────────────────── */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.quick-card {
+  background: white;
+  border: 1.5px solid var(--stone-200);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  text-align: left;
+  font-family: var(--font);
+}
+
+.quick-card:hover {
+  border-color: var(--amber-400);
+  box-shadow: 0 2px 14px rgba(245, 158, 11, 0.12);
+}
+
+.quick-card-icon { font-size: 26px; margin-bottom: 10px; }
+.quick-card-title { font-size: 15px; font-weight: 600; color: var(--stone-900); }
+.quick-card-desc  { font-size: 13px; color: var(--stone-500); margin-top: 4px; }
+
+/* ── Progress bar (Stats) ────────────────────────── */
+.bar-row { margin-bottom: 14px; }
+
+.bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--stone-600);
+  margin-bottom: 6px;
+}
+
+.bar-track {
+  height: 8px;
+  background: var(--stone-100);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--amber-500);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* ── Empty state ─────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--stone-400);
+}
+
+.empty-state-icon { font-size: 44px; margin-bottom: 12px; }
+.empty-state-text { font-size: 15px; }
+
+/* ── Scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--stone-200); border-radius: 3px; }
