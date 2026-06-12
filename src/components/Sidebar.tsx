@@ -1,3 +1,4 @@
+import { useStore } from '../store/useStore'
 import type { View } from '../App'
 
 interface NavItem {
@@ -18,15 +19,20 @@ const NAV_ITEMS: NavItem[] = [
 interface Props {
   active: View
   onNavigate: (v: View) => void
+  onSettings: () => void
+  onShare: () => void
 }
 
-export default function Sidebar({ active, onNavigate }: Props) {
+export default function Sidebar({ active, onNavigate, onSettings, onShare }: Props) {
+  const apiKey = useStore((s) => s.apiKey)
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
         <span className="sidebar-logo-icon">🐝</span>
         <span className="sidebar-logo-text">Bee Productive</span>
       </div>
+
       <nav className="sidebar-nav">
         {NAV_ITEMS.map((item) => (
           <button
@@ -39,6 +45,18 @@ export default function Sidebar({ active, onNavigate }: Props) {
           </button>
         ))}
       </nav>
+
+      <div className="sidebar-footer">
+        <button className="nav-item nav-item--footer" onClick={onShare}>
+          <span className="nav-item-icon">📤</span>
+          Share Progress
+        </button>
+        <button className="nav-item nav-item--footer" onClick={onSettings}>
+          <span className="nav-item-icon">⚙️</span>
+          Settings
+          {apiKey && <span className="sidebar-api-dot" title="Claude connected" />}
+        </button>
+      </div>
     </aside>
   )
 }

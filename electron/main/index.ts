@@ -1,5 +1,28 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
+
+ipcMain.handle('claude:message', async (_event, { apiKey, prompt, system }: { apiKey: string; prompt: string; system?: string }) => {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5',
+      max_tokens: 150,
+      ...(system ? { system } : {}),
+      messages: [{ role: 'user', content: prompt }]
+    })
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error((err as { error?: { message?: string } }).error?.message ?? `HTTP ${res.status}`)
+  }
+  const data = await res.json() as { content: Array<{ text: string }> }
+  return data.content[0].text.trim()
+})
 
 function createWindow(): void {
   const win = new BrowserWindow({

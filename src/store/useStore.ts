@@ -43,6 +43,8 @@ interface Store {
   habits: Habit[]
   focusSessions: FocusSession[]
   quests: Quest[]
+  apiKey: string
+  setApiKey: (key: string) => void
   addTask: (title: string, priority: Priority) => void
   toggleTask: (id: string) => void
   deleteTask: (id: string) => void
@@ -93,6 +95,8 @@ export const useStore = create<Store>()(
       habits: [],
       focusSessions: [],
       quests: [],
+      apiKey: '',
+      setApiKey: (key) => set({ apiKey: key }),
 
       addTask: (title, priority) =>
         set((s) => ({

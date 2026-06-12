@@ -1,21 +1,51 @@
+import { useState, useEffect, useRef } from 'react'
+import { useStore } from '../store/useStore'
+
 interface Props {
   mood?: 'happy' | 'focused' | 'cheering' | 'idle'
   size?: number
+  context?: string
 }
 
 const SPEECH: Record<NonNullable<Props['mood']>, string[]> = {
   happy:    ["You're on a roll!", "Keep it up!", "Bzzzzt! Great work!"],
   focused:  ["Stay focused!", "You've got this!", "Bzz... in the zone."],
-  cheering: ["Amazing streak!", "Habit champion!", "🍯 Honey-tier productivity!"],
+  cheering: ["Amazing streak!", "Habit champion!", "Honey-tier productivity!"],
   idle:     ["What shall we do today?", "Ready when you are!", "Bzzzt! Let's get busy."]
 }
+
+const SYSTEM = `You are Bramble, a cheerful and encouraging bee productivity assistant.
+Speak in short, punchy one-liners (max 12 words). Be warm, playful, and motivating.
+Occasionally use light bee puns. Never use hashtags or markdown.`
 
 function pick(arr: string[]): string {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
-export default function Bramble({ mood = 'idle', size = 80 }: Props) {
-  const quote = pick(SPEECH[mood])
+export default function Bramble({ mood = 'idle', size = 80, context }: Props) {
+  const apiKey = useStore((s) => s.apiKey)
+  const [quote, setQuote] = useState(() => pick(SPEECH[mood]))
+  const [loading, setLoading] = useState(false)
+  const fetchedRef = useRef(false)
+
+  useEffect(() => {
+    setQuote(pick(SPEECH[mood]))
+    fetchedRef.current = false
+  }, [mood])
+
+  useEffect(() => {
+    if (!apiKey || fetchedRef.current) return
+    fetchedRef.current = true
+    setLoading(true)
+    const prompt = context
+      ? `You are in ${mood} mood. Context: ${context}. Say something encouraging.`
+      : `You are in ${mood} mood. Say something encouraging and motivating.`
+
+    window.api.callClaude(apiKey, prompt, SYSTEM)
+      .then((text) => setQuote(text))
+      .catch(() => { /* keep fallback quote */ })
+      .finally(() => setLoading(false))
+  }, [apiKey, mood, context])
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -30,8 +60,6 @@ export default function Bramble({ mood = 'idle', size = 80 }: Props) {
       >
         {/* Body */}
         <ellipse cx="40" cy="48" rx="22" ry="20" fill="#F59E0B" />
-        {/* Stripes */}
-        <ellipse cx="40" cy="48" rx="22" ry="20" fill="none" />
         <rect x="20" y="44" width="40" height="7" rx="2" fill="#1C1917" opacity="0.18" />
         <rect x="20" y="54" width="40" height="5" rx="2" fill="#1C1917" opacity="0.13" />
         {/* Head */}
@@ -41,8 +69,14 @@ export default function Bramble({ mood = 'idle', size = 80 }: Props) {
         <circle cx="45" cy="27" r="3" fill="#1C1917" />
         <circle cx="36" cy="26" r="1" fill="white" />
         <circle cx="46" cy="26" r="1" fill="white" />
-        {/* Smile */}
-        <path d="M35 33 Q40 38 45 33" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" fill="none" />
+        {/* Smile — varies by mood */}
+        {mood === 'cheering' ? (
+          <path d="M33 32 Q40 40 47 32" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" fill="none" />
+        ) : mood === 'focused' ? (
+          <path d="M35 34 Q40 34 45 34" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" fill="none" />
+        ) : (
+          <path d="M35 33 Q40 38 45 33" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" fill="none" />
+        )}
         {/* Antennae */}
         <line x1="36" y1="15" x2="30" y2="7" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" />
         <circle cx="29" cy="6" r="2.5" fill="#F59E0B" stroke="#1C1917" strokeWidth="1.5" />
@@ -69,8 +103,10 @@ export default function Bramble({ mood = 'idle', size = 80 }: Props) {
         fontSize: 13,
         color: '#44403C',
         fontWeight: 500,
-        maxWidth: 200,
-        position: 'relative'
+        maxWidth: 220,
+        position: 'relative',
+        opacity: loading ? 0.6 : 1,
+        transition: 'opacity 0.2s'
       }}>
         <span style={{
           position: 'absolute',
@@ -94,8 +130,8 @@ export default function Bramble({ mood = 'idle', size = 80 }: Props) {
           borderBottom: '5px solid transparent',
           borderRight: '7px solid white'
         }} />
-        <em style={{ fontStyle: 'normal' }}>"{quote}"</em>
-        <div style={{ fontSize: 11, color: '#A8A29E', marginTop: 3 }}>— Bramble</div>
+        {loading ? <em style={{ fontStyle: 'italic', color: '#A8A29E' }}>Bzzzzt...</em> : <em style={{ fontStyle: 'normal' }}>"{quote}"</em>}
+        <div style={{ fontSize: 11, color: '#A8A29E', marginTop: 3 }}>— Bramble{apiKey ? ' ✨' : ''}</div>
       </div>
     </div>
   )
