@@ -5,8 +5,9 @@ import TasksView from './views/TasksView'
 import HabitsView from './views/HabitsView'
 import TimerView from './views/TimerView'
 import StatsView from './views/StatsView'
+import QuestBoardView from './views/QuestBoardView'
 
-export type View = 'home' | 'tasks' | 'habits' | 'timer' | 'stats'
+export type View = 'home' | 'tasks' | 'habits' | 'timer' | 'stats' | 'quests'
 
 export default function App() {
   const [view, setView] = useState<View>('home')
@@ -18,6 +19,7 @@ export default function App() {
       case 'habits':  return <HabitsView />
       case 'timer':   return <TimerView />
       case 'stats':   return <StatsView />
+      case 'quests':  return <QuestBoardView />
     }
   }
 

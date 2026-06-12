@@ -8,6 +8,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'home',   label: 'Home',         icon: '🏠' },
+  { id: 'quests', label: 'Quest Board',  icon: '⚔️' },
   { id: 'tasks',  label: 'Tasks',        icon: '✅' },
   { id: 'habits', label: 'Habits',       icon: '🔥' },
   { id: 'timer',  label: 'Focus Timer',  icon: '⏱️' },

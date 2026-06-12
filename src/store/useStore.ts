@@ -4,6 +4,17 @@ import { format, subDays } from 'date-fns'
 
 export type Priority = 'low' | 'medium' | 'high'
 
+export type QuestCategoryId = 'armor' | 'dragon' | 'health' | 'joy' | 'tomorrow'
+
+export interface Quest {
+  id: string
+  title: string
+  category: QuestCategoryId
+  completed: boolean
+  createdAt: string
+  completedAt?: string
+}
+
 export interface Task {
   id: string
   title: string
@@ -31,6 +42,7 @@ interface Store {
   tasks: Task[]
   habits: Habit[]
   focusSessions: FocusSession[]
+  quests: Quest[]
   addTask: (title: string, priority: Priority) => void
   toggleTask: (id: string) => void
   deleteTask: (id: string) => void
@@ -38,6 +50,9 @@ interface Store {
   toggleHabitToday: (id: string) => void
   deleteHabit: (id: string) => void
   addFocusSession: (minutes: number) => void
+  addQuest: (title: string, category: QuestCategoryId) => void
+  toggleQuest: (id: string) => void
+  deleteQuest: (id: string) => void
 }
 
 function uid(): string {
@@ -77,6 +92,7 @@ export const useStore = create<Store>()(
       tasks: [],
       habits: [],
       focusSessions: [],
+      quests: [],
 
       addTask: (title, priority) =>
         set((s) => ({
@@ -130,7 +146,26 @@ export const useStore = create<Store>()(
             ...s.focusSessions,
             { id: uid(), minutes, completedAt: new Date().toISOString() }
           ]
-        }))
+        })),
+
+      addQuest: (title, category) =>
+        set((s) => ({
+          quests: [
+            ...s.quests,
+            { id: uid(), title, category, completed: false, createdAt: new Date().toISOString() }
+          ]
+        })),
+
+      toggleQuest: (id) =>
+        set((s) => ({
+          quests: s.quests.map((q) =>
+            q.id === id
+              ? { ...q, completed: !q.completed, completedAt: !q.completed ? new Date().toISOString() : undefined }
+              : q
+          )
+        })),
+
+      deleteQuest: (id) => set((s) => ({ quests: s.quests.filter((q) => q.id !== id) }))
     }),
     { name: 'bee-productive-store' }
   )
